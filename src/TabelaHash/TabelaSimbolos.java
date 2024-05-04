@@ -57,6 +57,9 @@ public class TabelaSimbolos {
                 case "STRING_CONST":
                     this.mapaSimbolos.put(palavra, palavrasReservadas.inserirConst(palavra, "STRING_CONST"));
                     break;
+                case "NUM_CONST":
+                    this.mapaSimbolos.put(palavra, palavrasReservadas.inserirConst(palavra, "NUM_CONST"));
+                    break;
                 default:
                     this.mapaSimbolos.put(palavra, palavrasReservadas.InserirID(palavra));
                     break;
@@ -67,15 +70,14 @@ public class TabelaSimbolos {
     private String detectarTipoPalavra(String palavra) {
         if (palavra.length() >= 2 && palavra.charAt(0) == '\'' && palavra.charAt(palavra.length() - 1) == '\'') {
             return "STRING_CONST";
+        } else if (palavra.chars().allMatch(Character::isDigit)) {
+            return "NUM_CONST";
         } else {
             return "ID";
         }
     }
 
     private void Listando() {
-        System.out.println();
-        System.out.println("---------------------------------------");
-        System.out.println("Iterando sobre as chaves e valores do HashMap:");
         for (String lexema : mapaSimbolos.keySet()) {
             Simbolo simbolo = mapaSimbolos.get(lexema);
             System.out.println(simbolo.toString());

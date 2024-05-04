@@ -71,8 +71,7 @@ public class Simbolo {
 
     @Override
     public String toString() {
-        return "[lexema=" + lexema + ", token=" + token + ", classe=" + classe + ", tipo=" + tipo
-                + ", endereco=" + endereco + "]";
+        return "Lexema: " + lexema + " - Token: " + token + " - Tipo: " + tipo;
     }
 
 }
