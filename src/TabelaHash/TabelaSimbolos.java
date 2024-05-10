@@ -53,27 +53,34 @@ public class TabelaSimbolos {
         if (palavrasReservadas.Pesquisar(palavra) != 0) {
             this.mapaSimbolos.put(palavra, palavrasReservadas.BuscarSimbolo(palavra));
         } else {
-            switch (detectarTipoPalavra(palavra)) {
-                case "STRING_CONST":
-                    this.mapaSimbolos.put(palavra, palavrasReservadas.inserirConst(palavra, "STRING_CONST"));
-                    break;
-                case "NUM_CONST":
-                    this.mapaSimbolos.put(palavra, palavrasReservadas.inserirConst(palavra, "NUM_CONST"));
-                    break;
-                default:
-                    this.mapaSimbolos.put(palavra, palavrasReservadas.InserirID(palavra));
-                    break;
+            try {
+                switch (detectarTipoPalavra(palavra)) {
+                    case "STRING_CONST":
+                        this.mapaSimbolos.put(palavra, palavrasReservadas.inserirConst(palavra, "STRING_CONST"));
+                        break;
+                    case "NUM_CONST":
+                        this.mapaSimbolos.put(palavra, palavrasReservadas.inserirConst(palavra, "NUM_CONST"));
+                        break;
+                    case "ID":
+                        this.mapaSimbolos.put(palavra, palavrasReservadas.InserirID(palavra));
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                System.exit(0);
             }
         }
     }
 
-    private String detectarTipoPalavra(String palavra) {
+    private String detectarTipoPalavra(String palavra) throws Exception {
         if (palavra.length() >= 2 && palavra.charAt(0) == '\'' && palavra.charAt(palavra.length() - 1) == '\'') {
             return "STRING_CONST";
         } else if (palavra.chars().allMatch(Character::isDigit)) {
             return "NUM_CONST";
-        } else {
+        } else if (!Character.isDigit(palavra.charAt(0))) {
             return "ID";
+        } else {
+            throw new Exception("Falha ao processar arquivo. Erro ao declarar: " + palavra);
         }
     }
 
